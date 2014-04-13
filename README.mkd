@@ -8,19 +8,103 @@ Now, you can make well-designed Vim script application easily.
 
 ### Canvas
 
-`(TBD)`
+`vivid2d`では、1つのバッファに対して1つのキャンバスを割り当てる形で描画エリアを作成することができます。
+作成したキャンバスのインスタンスを操作することで、自動的にバッファの描画が変更されます。
 
-### Shapes
+```vim
+" args: name, fps, width, height
+canvas1 = vivid2d#canvas#new('canvas1', 30, '100%', '100%')
+canvas2 = vivid2d#canvas#new('canvas2', 30, '800px', '600px')
+```
 
-`(TBD)`
+### Element
 
-### Embed image
+`vivid2d`では、キャンバスが複数のエレメントを持つことで要素を描画します。エレメントは標準で`四角形`、`円`、`三角形`などのシェイプや`画像（ドット絵）`などが用意されています。`vivid2d`のキャンバスでは、バッファにおける半角スペース2つ分を1ドット相当として扱い、エレメントの大きさや表示位置などは基本的にこの仮想的なドットの単位で指定します。
 
-`(TBD)`
+```vim
+" args: z-index, x, y, width, height
+canvas.elements.elem1 = vivid2d#element#square#new(1, '0', '0', '300', '300')
+canvas.elements.elem1.show()
+```
+
+キャンバスにエレメントを追加する例です。エレメントは必ず`重なり順`、`表示状態(表示/非表示)`、表示位置x座標`、`表示位置y座標`をプロパティとして持ちます。
+
+
+
+```vim
+canvas.elements.elem2 = vivid2d#element#circle#new(1, '-0', '-0', '300', '300')
+canvas.elements.elem2.show()
+```
+
+表示位置のx,y座標は、それぞれキャンバス左辺から、上辺からの相対座標です。ただし、負値を指定した場合はキャンバス右辺から、下辺からの相対座標になります。この例ではキャンバス右下にエレメントが描画されます。
+
+
+```vim
+" set attributes
+canvas.elements.elem1.attr('width', '300')
+canvas.elements.elem1.attr('height', '300')
+canvas.elements.elem1.attr('background_color', '#CCCCCC')
+canvas.elements.elem1.attr('color', '#333333')
+canvas.elements.elem1.attr('padding', '20px')
+canvas.elements.elem1.attr('margin', '20px')
+canvas.elements.elem1.attr('text', 'これは四角形です')
+canvas.elements.elem1.attr('text-align', 'center')
+```
+
+エレメントには`attr()`メソッドを使用することで属性を設定することができます。これらの属性は`draw()`メソッドで使用されます。
+
+
+
+
+`vivid2d`が適用されたバッファでは、定期的にキャンバスの再描画処理が行われます。再描画の感覚はキャンバスによって異なり、キャンバス作成時にFPS（1秒間に何回再描画を行うか）という形で指定されます。
+
+キャンバスの再描画時には、キャンバスが持つ各種hook及び各エレメントの`draw()`メソッドが呼び出されます。
+
+```vim
+canvas.hooks.add('pre_draw', 'my_pre_draw_func', function('g:my_pre_draw_func'))
+canvas.hooks.add('post_draw', 'my_post_draw_func', function('g:my_post_draw_func'))
+```
+
+各エレメントは重なり順(z-index)が小さい順に`draw()`メソッドを呼び出され、順にキャンバスに描画されます。`draw()`メソッドはドット絵の要領で構成された描画情報をhashとして返します。
+
+```vim
+function! vivid2d#element#sample_vimtext#draw()
+  return {
+        \ 'dots' : [
+        \   split('A, , , ,A, , ,B,B,B,B,B, , ,C, , , ,C', ','),
+        \   split('A, , , ,A, , , , ,B, , , , ,C,C, ,C,C', ','),
+        \   split(' ,A, ,A, , , , , ,B, , , , ,C, ,C, ,C', ','),
+        \   split(' ,A, ,A, , , , , ,B, , , , ,C, , , ,C', ','),
+        \   split(' , ,A, , , , ,B,B,B,B,B, , ,C, , , ,C', ',')
+        \   ],
+        \ 'colors' : {
+        \     'A' : '#cc0000',
+        \     'B' : '#00cc00',
+        \     'C' : '#0000cc'
+        \   }
+        \ }
+endfunction
+```
 
 ### Timeline/Animation
 
-`(TBD)`
+`vivid2d`はアニメーションやエフェクトの仕組みを持っています。
+
+```vim
+" 絶対座標(100,100)に60FPSかけて移動
+canvas.elements.elem1.move_to('100', '100', 60)
+```
+
+```vim
+" 相対座標(+100,-100)に60FPSかけて移動
+canvas.elements.elem1.move('+100', '-100', 60)
+```
+
+```vim
+" 3ドット四方にふるえるエフェクトを60FPSの間発生させる
+canvas.elements.elem1.effect('shake', '3', 60)
+```
+
 
 
 ## Author
