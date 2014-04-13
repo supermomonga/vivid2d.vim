@@ -1,0 +1,33 @@
+## ViVid2d - 2D Graphic rendering engine for Vim script
+
+This is the graphic rendering engine for Vim script.
+
+Now, you can make well-designed Vim script application easily.
+
+## Example
+
+### Canvas
+
+`(TBD)`
+
+### Shapes
+
+`(TBD)`
+
+### Embed image
+
+`(TBD)`
+
+### Timeline/Animation
+
+`(TBD)`
+
+
+## Author
+
+@supermomonga
+
+
+## Lisense
+
+MIT Lisense
