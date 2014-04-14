@@ -23,7 +23,7 @@ canvas2 = vivid2d#canvas#new('canvas2', 30, '800px', '600px')
 
 ```vim
 " args: z-index, x, y, width, height
-canvas.elements.elem1 = vivid2d#element#square#new(1, '0', '0', '300', '300')
+canvas.elements.elem1 = vivid2d#element#square.new(1, '0', '0', '300', '300')
 canvas.elements.elem1.show()
 ```
 
@@ -32,7 +32,7 @@ canvas.elements.elem1.show()
 
 
 ```vim
-canvas.elements.elem2 = vivid2d#element#circle#new(1, '-0', '-0', '300', '300')
+canvas.elements.elem2 = vivid2d#element#circle.new(1, '-0', '-0', '300', '300')
 canvas.elements.elem2.show()
 ```
 
@@ -69,7 +69,7 @@ canvas.hooks.add('post_draw', 'my_post_draw_func', function('g:my_post_draw_func
 
 ```vim
 let vivid2d#element#sample_vimtext = copy(vivid2d#element#base)
-function! vivid2d#element#sample_vimtext#draw()
+function! vivid2d#element#sample_vimtext.draw()
   return {
         \ 'dots' : [
         \   split('A, , , ,A, , ,B,B,B,B,B, , ,C, , , ,C', ','),
