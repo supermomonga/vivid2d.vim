@@ -68,6 +68,7 @@ canvas.hooks.add('post_draw', 'my_post_draw_func', function('g:my_post_draw_func
 各エレメントは重なり順(z-index)が小さい順に`draw()`メソッドを呼び出され、順にキャンバスに描画されます。`draw()`メソッドはドット絵の要領で構成された描画情報をhashとして返します。
 
 ```vim
+let vivid2d#element#sample_vimtext = copy(vivid2d#element#base)
 function! vivid2d#element#sample_vimtext#draw()
   return {
         \ 'dots' : [
