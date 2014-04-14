@@ -101,8 +101,8 @@ canvas.elements.elem1.move('+100', '-100', 1000)
 ```
 
 ```vim
-" 3ドット四方にふるえるエフェクトを60FPSの間発生させる
-canvas.elements.elem1.effect('shake', '3', 60)
+" 3ドット四方にふるえるエフェクトを1秒間(1000ms)発生させる
+canvas.elements.elem1.effect('shake', '3', 1000)
 ```
 
 
